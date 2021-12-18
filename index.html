@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- <h1>Ventilator App</h1> -->
+    
+
+    <!-- <div class='demo'> -->
+      
+        <!-- <label for="sex">Select Sex</label>
+        <select name="sex" id="sex" type='text' >
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+        <label for="height">Select Height(inches)</label>
+        <input type="number" id="height" value='' min="48" max="84"  />
+        <input type="submit" value="Submit" id="submit" class='button' />
+    
+        
+      
+    </div> -->
+
+    <div class="modalOne hidden ">
+      
+      <h2>Select a Guideline</h2>
+      <p>
+        <div class="buttons ">
+          <button class='button' id="ards" type="button">ARDS/SEPSIS</button>
+          <button class='button' id="copd" type="button">COPD/ASTHMA</button>
+          <button class='button' id="heart" type="button">HEART & OTHERS</button>
+          <button class='button' id="neuro" type="button">NEUROPROTECTIVE</button>
+        </div>
+      </p>
+    </div>
+
+    <div class="modalTwo hidden ">
+      
+      <h2>Please Confirm</h2>
+      <p id='confirm'>
+      </p>
+        <div class="confirmBlock ">
+          <button class='button' id="confirmB" type="button">CONFIRM</button>
+          <button class='button' id="reset" type="button">RESET</button>
+          </div>
+      
+    </div>
+
+    <div class="modalGuideline">
+      
+      <h2>ARDS</h2>
+      <p>Use with Normal Oxygenation High PEEP Table</p>
+      <p >Goal: pH 7.30 - 7.45 & PaO2 > 55 or SpOx > 88</p>
+      <ul>Note</ul>
+      <li>Call Critical Care MDc for pH < 7.29 or > 7.55</li>
+      <li>Max Set VR = 30</li>
+      <li>Initial PEEP Setup = 8</li>
+      <li>Measure cuff pressures: Air: at referring, altitude, landing</li>
+      <li>Ground: referring</li>
+        
+      
+    </div>
+    <div class="overlay hidden"></div>
+  </body>
+  <script src="script.js"></script>
+</html>

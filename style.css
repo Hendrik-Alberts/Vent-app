@@ -1,15 +1,11 @@
 body {
   background-color: #f1faee;
   font-family: "Roboto", sans-serif;
-}
-
-h1 {
   color: #1d3557;
-  text-align: center;
 }
 
+h1,
 h2 {
-  color: #1d3557;
   text-align: center;
 }
 
@@ -20,6 +16,10 @@ h2 {
 .demo {
   text-align: center;
   font-weight: 800;
+}
+
+.el {
+  padding: 1.5em;
 }
 
 .button {
@@ -47,6 +47,13 @@ h2 {
   background-color: #457b9d;
 }
 
+#buttonFlex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
 .modalTwo {
   text-align: center;
   font-weight: 500;
@@ -55,4 +62,68 @@ h2 {
 
 .modalGuideline {
   text-align: center;
+}
+
+.modalGuideline p {
+  font-weight: 700;
+}
+
+.guideHead {
+  font-size: xx-large;
+}
+
+hr {
+  border-top: 5px solid #1d3557;
+}
+
+.note {
+  border: 3px;
+  border-style: solid;
+  border-radius: 1ex;
+  padding: 0.3em;
+  border-color: #1d3557;
+  display: inline-block;
+  color: #1d3557;
+}
+
+.redText {
+  color: #e63946;
+}
+
+.noteHead {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bolder;
+  color: #e63946;
+}
+.noteBox {
+  border: 3px;
+  border-style: solid;
+  border-radius: 1ex;
+  padding: 1em;
+  padding-top: 0%;
+  border-color: #e63946;
+  display: inline-block;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.goal {
+  border: 3px;
+  border-radius: 1ex;
+  border-style: solid;
+  border-color: #1d3557;
+  display: inline-block;
+  padding: 0.3em;
+  padding-top: 0%;
+  background-color: #e63946;
+}
+
+.guide {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
 }

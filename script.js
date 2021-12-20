@@ -4,6 +4,8 @@ const btnArds = document.getElementById("ards");
 const btnCopd = document.getElementById("copd");
 const btnHeart = document.getElementById("heart");
 const btnNeuro = document.getElementById("neuro");
+const confirmBtn = document.getElementById("confirmB");
+const resetBtn = document.getElementById("reset");
 const initForm = document.querySelector(".form");
 const btnSubmit = document.querySelector("#submit");
 let heightInput = document.getElementById("height");
@@ -16,6 +18,18 @@ const copdModal = document.querySelector(".copdModal");
 const heartModal = document.querySelector(".heartModal");
 const neuroModal = document.querySelector(".neuroModal");
 let initSetModal = document.querySelector(".initSet");
+const abgModal = document.querySelector(".abg");
+const phInput = document.getElementById("ph");
+
+const paco2Input = document.getElementById("paco2");
+const hco3Input = document.getElementById("hco3");
+const pao2Input = document.getElementById("pao2");
+const spo2Input = document.getElementById("spo2");
+const abgSubBtn = document.getElementById("abgBtn");
+const clearAbgBtn = document.getElementById("clearAbg");
+const initSet = document.querySelector(".initSet");
+let initialSet = document.createElement("p");
+let initBtn = document.createElement("button");
 let confirm = document.getElementById("confirm");
 let pbw = 0;
 let ards = false;
@@ -26,6 +40,11 @@ let neuro = false;
 heightInput.value = "";
 sex.value = "";
 bagged.value = "";
+phInput.value = "";
+paco2Input.value = "";
+hco3Input.value = "";
+pao2Input.value = "";
+spo2Input.value = "";
 
 //This function opens modal1
 const openModal1 = function () {
@@ -35,48 +54,6 @@ const openModal1 = function () {
 //This function opens ards modal
 const openArdsModal = function () {
   ardsModal.classList.remove("hidden");
-  if (bagged.value === "Yes") {
-    console.log("follow yes route");
-    //Modal showing VT and Rate, remind user to obtain ABG in 15 minutes.
-
-    const initSet = document.querySelector(".initSet");
-    let initialSet = document.createElement("p");
-    initSet.append(initialSet);
-    initialSet.textContent = `Initial ventilator settings: VT = ${vTCalc(
-      pbwFormula(ptHeight, ptSex)
-    )}, Rate of 20, PEEP of 8 mmHg.`;
-
-    //Modal asking: Is new pH <= 7.30?
-
-    //If Yes
-
-    //Increase VT by 30% (Max of 30bpm)
-
-    //If No
-
-    //Is pH >= 7.45?
-
-    //Yes
-
-    //Maintain
-
-    //No
-
-    //Decrease VR by 20% (min 10bpm)
-  } else {
-    console.log("follow no route");
-    //Modal as to enter current VT, total VR and MV
-
-    //Set VT at 6ml/kg
-
-    //Is pH >= 7.30?
-
-    //Yes
-
-    //Is pH >= 7.45?
-
-    //No
-  }
 };
 
 //This function opens copd modal
@@ -98,34 +75,11 @@ const openNeuroModal = function () {
 
 const openModal2 = function () {
   modal2.classList.remove("hidden");
+};
 
-  const confirmBtn = document.getElementById("confirmB");
-  const resetBtn = document.getElementById("reset");
-
-  //Start Over eventlistener
-  resetBtn.addEventListener("click", function () {
-    modal2.classList.add("hidden");
-    heightInput.value = "";
-    sex.value = "";
-    bagged.value = "";
-  });
-
-  //confirm button eventListener
-  confirmBtn.addEventListener("click", function () {
-    modal2.classList.add("hidden");
-    demographics.classList.add("hidden");
-    document.querySelector("h1").classList.add("hidden");
-
-    if (ards != false) {
-      openArdsModal();
-    } else if (copd != false) {
-      openCopdModal();
-    } else if (heart != false) {
-      openHeartModal();
-    } else if (neuro != false) {
-      openNeuroModal();
-    }
-  });
+//This function opens abgModal
+const openAbg = function () {
+  abgModal.classList.remove("hidden");
 };
 
 //Functions to calc pbw and vT
@@ -139,9 +93,9 @@ const pbwFormula = function (height, sex) {
   }
 };
 
-const vTCalc = function () {
+const vTCalc = function (pbw) {
   const vT = Math.round(pbw * 6);
-  console.log(vT);
+  return vT;
 };
 
 //eventListener for submit button. This will direct user to one of 4 modals depending on what vent guideline was picked.
@@ -154,12 +108,110 @@ btnSubmit.addEventListener("click", function () {
   } else {
     openModal1();
 
+    //confirm button eventListener
+    confirmBtn.addEventListener("click", function () {
+      modal2.classList.add("hidden");
+      demographics.classList.add("hidden");
+      document.querySelector("h1").classList.add("hidden");
+
+      if (ards != false) {
+        openArdsModal();
+      } else if (copd != false) {
+        openCopdModal();
+      } else if (heart != false) {
+        openHeartModal();
+      } else if (neuro != false) {
+        openNeuroModal();
+      }
+    });
+
+    //Start Over eventlistener
+    resetBtn.addEventListener("click", function () {
+      modal2.classList.add("hidden");
+      heightInput.value = "";
+      sex.value = "";
+      bagged.value = "";
+      initialSet.textContent = "";
+    });
+
     //Eventlistener ards
     btnArds.addEventListener("click", function () {
       ards = true;
       modal1.classList.add("hidden");
       openModal2();
       confirm.innerHTML = `Confirm! ${ptSex}, ${ptHeight} inches tall, using the ARDS Guideline? Pt is being bagged / no ABG? ${ptBagged}`;
+
+      if (bagged.value === "Yes") {
+        console.log("follow yes route");
+
+        //Modal showing VT and Rate, remind user to obtain ABG in 15 minutes.
+
+        initSet.append(initialSet, initBtn);
+        initialSet.textContent = `Initial ventilator settings: VT = ${vTCalc(
+          pbw
+        )}, Rate of 20, PEEP of 8 mmHg.`;
+
+        initBtn.textContent = "Next";
+        initBtn.classList.add("button");
+        initBtn.addEventListener("click", function () {
+          document.querySelector(".initSet").classList.add("hidden");
+
+          //Modal asking: Is new pH <= 7.30?
+          ardsModal.classList.add("hidden");
+          openAbg();
+
+          abgSubBtn.addEventListener("click", function () {
+            const ptPh = phInput.value;
+            console.log(ptPh);
+            const ptPaco2 = paco2Input.value;
+            console.log(ptPaco2);
+            const ptHco3 = hco3Input.value;
+            console.log(ptHco3);
+            const ptPao2 = pao2Input.value;
+            console.log(ptPao2);
+            const ptSpo2 = spo2Input.value;
+            console.log(ptSpo2);
+          });
+          clearAbgBtn.addEventListener("click", function () {
+            phInput.value = "";
+            paco2Input.value = "";
+            hco3Input.value = "";
+            pao2Input.value = "";
+            spo2Input.value = "";
+          });
+
+          //NOTE: OK, so tommorrow I need to hide this phMOdal and start following the logic to see what adjuctments need to be made.
+
+          //If Yes
+
+          //Increase VT by 30% (Max of 30bpm)
+
+          //If No
+
+          //Is pH >= 7.45?
+
+          //Yes
+
+          //Maintain
+
+          //No
+
+          //Decrease VR by 20% (min 10bpm)
+        });
+      } else {
+        console.log("follow no route");
+        //Modal as to enter current VT, total VR and MV
+
+        //Set VT at 6ml/kg
+
+        //Is pH >= 7.30?
+
+        //Yes
+
+        //Is pH >= 7.45?
+
+        //No
+      }
     });
 
     //Eventlistener copd

@@ -56,6 +56,36 @@
       
     </div>
 
+    <div class="abg hidden">
+      <span>
+        <label for="pH">pH</label>
+        <input type="text" id="ph" value='' placeholder="7.35 - 7.45"  /> 
+      </span>
+      
+      <span>
+        <label for="PaCO2">PaCO2</label>
+        <input type="text" id="paco2" value='' placeholder="35 mmHg - 45 mmHg"/>
+      </span>
+      <span>
+        <label for="HCO3">HCO3</label>
+        <input type="text" id="hco3" value='' placeholder="22 mEq/L - 26 mEq/L"  />
+      </span>
+      <span>
+        <label for="PaO2">PaO2</label>
+        <input type="text" id="pao2" value='' placeholder="75 mmHg - 100 mmHg"  />
+      </span>
+      <span>
+        <label for="SpO2">SpO2</label>
+        <input type="text" id="spo2" value='' placeholder=">95%"  />
+      </span>
+      <span>
+        <button class="button" id='abgBtn' type='button'>SUBMIT</button>
+        <button class="button" id="clearAbg" type='button'>CLEAR</button>
+      </span>
+      
+
+    </div>
+
     <div class="modalGuideline ">
 
       <div class="ardsModal hidden">
@@ -201,10 +231,12 @@
               </div>
        
              
-              </div>  
+          </div>  
+          
+          
       
     
-    <div class="overlay hidden"></div>
+    
   </body>
   <script src="script.js"></script>
 </html>

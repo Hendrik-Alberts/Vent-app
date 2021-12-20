@@ -10,7 +10,7 @@ h2 {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .demo {
@@ -57,7 +57,14 @@ h2 {
 .modalTwo {
   text-align: center;
   font-weight: 500;
-  border: 0.1em solid #264653;
+  border-radius: 1ex;
+  padding: 1em;
+  border: 3px;
+  border-style: solid;
+  background-color: #a8dadc;
+  width:fit-content;
+  height: fit-content;
+  margin: 0 auto;
 }
 
 .modalGuideline {
@@ -76,14 +83,16 @@ hr {
   border-top: 5px solid #1d3557;
 }
 
-.note {
+.note,
+.initSet {
   border: 3px;
   border-style: solid;
   border-radius: 1ex;
   padding: 0.3em;
   border-color: #1d3557;
-  display: inline-block;
+  display: inline-block; */
   color: #1d3557;
+  background-color: #a8dadc;
 }
 
 .redText {
@@ -107,6 +116,7 @@ hr {
   text-align: left;
   font-size: 12px;
   font-weight: 600;
+  background-color: #a8dadc;
 }
 
 .goal {
@@ -126,4 +136,33 @@ hr {
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.initSet {
+  margin: auto;
+}
+
+.abg {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  border: 3px;
+  border-style: solid;
+  border-radius: 1ex;
+  padding: 0.3em;
+  border-color: #1d3557;
+  color: #1d3557;
+  background-color: #a8dadc;
+  font-weight: 800;
+  padding: 1em;
+  width:fit-content;
+  height: fit-content;
+  margin: 0 auto;
+  
+  
+}
+
+span {
+  margin-top: 1em;
 }

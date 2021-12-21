@@ -14,19 +14,22 @@ let bagged = document.querySelector("#bagged");
 const modal1 = document.querySelector(".modalOne");
 const modal2 = document.querySelector(".modalTwo");
 const ardsModal = document.querySelector(".ardsModal");
+const ardsRate = 20;
 const copdModal = document.querySelector(".copdModal");
 const heartModal = document.querySelector(".heartModal");
 const neuroModal = document.querySelector(".neuroModal");
 let initSetModal = document.querySelector(".initSet");
 const abgModal = document.querySelector(".abg");
+const existSetModal = document.querySelector(".existSet");
 const phInput = document.getElementById("ph");
-
+const upRateMod = document.querySelector(".upRate");
 const paco2Input = document.getElementById("paco2");
 const hco3Input = document.getElementById("hco3");
 const pao2Input = document.getElementById("pao2");
 const spo2Input = document.getElementById("spo2");
 const abgSubBtn = document.getElementById("abgBtn");
 const clearAbgBtn = document.getElementById("clearAbg");
+const abgBackBtn = document.getElementById("abgBackBtn");
 const initSet = document.querySelector(".initSet");
 let initialSet = document.createElement("p");
 let initBtn = document.createElement("button");
@@ -80,6 +83,11 @@ const openModal2 = function () {
 //This function opens abgModal
 const openAbg = function () {
   abgModal.classList.remove("hidden");
+};
+
+//This function opens existin settings modal
+const existSet = function () {
+  existSetModal.classList.remove("hidden");
 };
 
 //Functions to calc pbw and vT
@@ -149,8 +157,8 @@ btnSubmit.addEventListener("click", function () {
         initSet.append(initialSet, initBtn);
         initialSet.textContent = `Initial ventilator settings: VT = ${vTCalc(
           pbw
-        )}, Rate of 20, PEEP of 8 mmHg.`;
-
+        )}, Rate of ${ardsRate}, PEEP of 8 mmHg.`;
+        //todo: Add RESET and BACK buttons here
         initBtn.textContent = "Next";
         initBtn.classList.add("button");
         initBtn.addEventListener("click", function () {
@@ -160,17 +168,49 @@ btnSubmit.addEventListener("click", function () {
           ardsModal.classList.add("hidden");
           openAbg();
 
+          abgBackBtn.addEventListener("click", function () {
+            //todo: Add logic for back button here
+            console.log("go back boy!");
+          });
           abgSubBtn.addEventListener("click", function () {
             const ptPh = phInput.value;
-            console.log(ptPh);
             const ptPaco2 = paco2Input.value;
-            console.log(ptPaco2);
             const ptHco3 = hco3Input.value;
-            console.log(ptHco3);
             const ptPao2 = pao2Input.value;
-            console.log(ptPao2);
             const ptSpo2 = spo2Input.value;
-            console.log(ptSpo2);
+            if (
+              ptPh === "" ||
+              ptPaco2 === "" ||
+              ptHco3 === "" ||
+              ptPao2 === "" ||
+              ptSpo2 === ""
+            ) {
+              alert("Please enter data in all fields.");
+            } else {
+              abgModal.classList.add("hidden");
+
+              if (ptPh <= 7.3) {
+                //write logic to display a modal with original vent rate + 30% (Max 30)
+                upRateMod.textContent = `Increase VR from ${ardsRate} to ${
+                  ardsRate + ardsRate * 0.3
+                }.`;
+                //todo: Add RESET and BACK buttons here
+                //initBtn.textContent = "Next";
+                //initBtn.classList.add("button");
+              } else {
+                if (ptPh >= 7.45) {
+                  //Decrease vent rate by 20 % (min 10)
+                  upRateMod.textContent = `Decrease VR from ${ardsRate} to ${
+                    ardsRate - ardsRate * 0.3
+                    //todo: Add RESET and BACK buttons here
+                  }.`;
+                } else {
+                  //Maintain all settings
+                  upRateMod.textContent = `You're no RT, but doing OK. Maintain these settings!`;
+                  //todo: Add RESET and BACK buttons here
+                }
+              }
+            }
           });
           clearAbgBtn.addEventListener("click", function () {
             phInput.value = "";
@@ -179,28 +219,12 @@ btnSubmit.addEventListener("click", function () {
             pao2Input.value = "";
             spo2Input.value = "";
           });
-
-          //NOTE: OK, so tommorrow I need to hide this phMOdal and start following the logic to see what adjuctments need to be made.
-
-          //If Yes
-
-          //Increase VT by 30% (Max of 30bpm)
-
-          //If No
-
-          //Is pH >= 7.45?
-
-          //Yes
-
-          //Maintain
-
-          //No
-
-          //Decrease VR by 20% (min 10bpm)
         });
       } else {
         console.log("follow no route");
+        initSet.classList.add("hidden");
         //Modal as to enter current VT, total VR and MV
+        existSetModal.classList.remove("hidden");
 
         //Set VT at 6ml/kg
 

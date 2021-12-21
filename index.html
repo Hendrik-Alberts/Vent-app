@@ -6,31 +6,36 @@
   <body>
     <h1>Ventilator App</h1>
     
-
+    <!-- Demographics shown on app startup -->
     <div class='demo'>
-      
-        <label for="sex">Select Sex</label> 
-        <select name="sex" id="sex" type='text' >
+        <span>
+          <label for="sex">Select Sex</label> 
+          <select name="sex" id="sex" type='text'  >
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
-        <label for="height">Select Height(inches)</label>
-        <input type="number" id="height" value='' min="48" max="84"  />
-        <div class="el">
+        </span>
+        
+        <span>
+          <label for="height">Select Height</label>
+          <input type="number" id="height" value='' min="48" max="84" placeholder="Height in Inches"  />
+        </span>
+
+        <span>
           <label for="bagged">Bagged / No ABG?</label>
-          <select name="bagged" id="bagged" type='text' >
+          <select name="bagged" id="bagged" type='text'  >
             <option value="Yes">Yes</option>
             <option value="No">No</option>
           </select>
-        </div>
+        </span>
 
-
-        <input type="submit" value="Submit" id="submit" class='button' />
-    
+        <span>
+          <input type="submit" value="Submit" id="submit" class='button' />
+        </span>
         
-      
     </div> 
 
+    <!-- Modal showing all 4 guidelines. Pick one -->
     <div class="modalOne  hidden">
       
       <h2>Select a Guideline</h2>
@@ -44,6 +49,7 @@
       </p>
     </div>
 
+    <!-- Modal Confirming initial selection -->
     <div class="modalTwo hidden ">
       
       <h2>Please Confirm</h2>
@@ -56,6 +62,7 @@
       
     </div>
 
+    <!-- ABG Modal     -->
     <div class="abg hidden">
       <span>
         <label for="pH">pH</label>
@@ -81,14 +88,13 @@
       <span>
         <button class="button" id='abgBtn' type='button'>SUBMIT</button>
         <button class="button" id="clearAbg" type='button'>CLEAR</button>
+        <button class="button" id='abgBackBtn' type='button'>BACK</button>
       </span>
-      
-
     </div>
-
+      
     <div class="modalGuideline ">
 
-      <div class="ardsModal hidden">
+    <div class="ardsModal hidden">
       
       <h2 class='guideHead'>ARDS/Sepsis Ventilation Algorithm</h2>
       <hr>
@@ -109,21 +115,36 @@
           </div>
           <div class="note">
             <p>Use with Normal Oxygenation <span class="redText">High</span> PEEP Table</p>
-          </div>  
+          </div> 
+          
+          
         
         
       </div>
       <hr>
-      <!-- Modals once inside guidelines                        -->
-      <div class="guide">
+      <!-- Modal showing initial vent settings (no abg/bagged) -->
+    
+    <div > 
+      <p class="initSet"></p>
+    </div>
 
-        <div class="initSet"> 
-          
-          
-          </div>
-   
-         
-          </div>  
+      <!-- Modal for existing vent settings -->
+      <div class="existSet hidden">
+        <span>
+          <label for="curVt">Current VT</label>
+          <input type="text" id="curVt" value='' placeholder="Enter current VT"  />
+        </span>
+        <span>
+          <label for="curVr">Current VR</label>
+          <input type="text" id="curVr" value='' placeholder="Enter current VR"  />
+        </span>
+        <span>
+          <button class="button" id='currBtn' type='button'>SUBMIT</button>
+          <button class="button" id="clearCurrBtn" type='button'>CLEAR</button>
+          <button class="button" id="backBtn" type='button'>BACK</button>
+        </span>
+      </div>
+      
     </div>
 
     <div class="copdModal hidden">
@@ -164,7 +185,7 @@
     </div>
 
     
-      <div class="heartModal hidden">
+    <div class="heartModal hidden">
       
         <h2 class='guideHead'>Heart & Others Ventilation Algorithm</h2>
         <hr>
@@ -191,9 +212,9 @@
           
         </div>
         <hr>
-      </div>
+    </div>
 
-        <div class="neuroModal hidden">
+    <div class="neuroModal hidden">
       
           <h2 class='guideHead'>Neuro Ventilation Algorithm</h2>
           <hr>
@@ -221,22 +242,28 @@
             
           </div>
           <hr>
-
+    </div>  
     <!-- Modals once inside guidelines                        -->
-          <div class="guide">
-
-            <div class="initSet"> 
-              <p>text here</p>
+    <div class="i">
+            
+            <!-- Display vent rate increase. -->
+            
               
+              <div class="ctrl">
+                <p class="upRate"></p>
               </div>
-       
+
+            
+            <!-- Display vent rate decrease.  -->
+            <div class="downRate">
+
+            </div>
+            <!-- Display maintain screen. -->
+            
+
+    </div>
+    </div>    
              
-          </div>  
-          
-          
-      
-    
-    
-  </body>
+    </body>
   <script src="script.js"></script>
 </html>

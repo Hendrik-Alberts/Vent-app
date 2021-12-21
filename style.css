@@ -14,12 +14,23 @@ h2 {
 }
 
 .demo {
-  text-align: center;
   font-weight: 800;
-}
-
-.el {
-  padding: 1.5em;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  border: 3px;
+  border-style: solid;
+  border-radius: 1ex;
+  padding: 0.3em;
+  border-color: #1d3557;
+  color: #1d3557;
+  background-color: #a8dadc;
+  font-weight: 800;
+  padding: 1em;
+  width: fit-content;
+  height: fit-content;
+  margin: 0 auto;
 }
 
 .button {
@@ -62,7 +73,7 @@ h2 {
   border: 3px;
   border-style: solid;
   background-color: #a8dadc;
-  width:fit-content;
+  width: fit-content;
   height: fit-content;
   margin: 0 auto;
 }
@@ -90,7 +101,7 @@ hr {
   border-radius: 1ex;
   padding: 0.3em;
   border-color: #1d3557;
-  display: inline-block; */
+  display: inline-block;
   color: #1d3557;
   background-color: #a8dadc;
 }
@@ -156,13 +167,30 @@ hr {
   background-color: #a8dadc;
   font-weight: 800;
   padding: 1em;
-  width:fit-content;
+  width: fit-content;
   height: fit-content;
   margin: 0 auto;
-  
-  
 }
 
 span {
   margin-top: 1em;
+}
+
+.existSet {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  border: 3px;
+  border-style: solid;
+  border-radius: 1ex;
+  padding: 0.3em;
+  border-color: #1d3557;
+  color: #1d3557;
+  background-color: #a8dadc;
+  font-weight: 800;
+  padding: 1em;
+  width: fit-content;
+  height: fit-content;
+  margin: 0 auto;
 }

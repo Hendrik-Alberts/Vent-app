@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="starter hidden">
     <h1>Ventilator App</h1>
     
     <!-- Demographics shown on app startup -->
@@ -34,7 +35,7 @@
         </span>
         
     </div> 
-
+  </div>
     <!-- Modal showing all 4 guidelines. Pick one -->
     <div class="modalOne  hidden">
       
@@ -118,7 +119,7 @@
           </div> 
           
           
-        
+       
         
       </div>
       <hr>
@@ -128,22 +129,7 @@
       <p class="initSet"></p>
     </div>
 
-      <!-- Modal for existing vent settings -->
-      <div class="existSet hidden">
-        <span>
-          <label for="curVt">Current VT</label>
-          <input type="text" id="curVt" value='' placeholder="Enter current VT"  />
-        </span>
-        <span>
-          <label for="curVr">Current VR</label>
-          <input type="text" id="curVr" value='' placeholder="Enter current VR"  />
-        </span>
-        <span>
-          <button class="button" id='currBtn' type='button'>SUBMIT</button>
-          <button class="button" id="clearCurrBtn" type='button'>CLEAR</button>
-          <button class="button" id="backBtn" type='button'>BACK</button>
-        </span>
-      </div>
+      
       
     </div>
 
@@ -244,25 +230,32 @@
           <hr>
     </div>  
     <!-- Modals once inside guidelines                        -->
-    <div class="i">
-            
-            <!-- Display vent rate increase. -->
-            
-              
-              <div class="ctrl">
-                <p class="upRate"></p>
-              </div>
-
-            
-            <!-- Display vent rate decrease.  -->
-            <div class="downRate">
-
-            </div>
-            <!-- Display maintain screen. -->
-            
+    
+    
+    <!-- new messaage model -->
+    <div class="messageModal hidden">
+      <p class="message"></p>
+      <button class="button" id="resetMessageBtn" type='button'>RESET</button>
+      <button class="button" id="goBackBtn" type='button'>BACK</button>
 
     </div>
-    </div>    
+
+    <!-- Modal for existing vent settings -->
+    <div class="existSet hidden">
+      <span>
+        <label for="curVt">Current VT</label>
+        <input type="text" id="curVt" value='' placeholder="Enter current VT"  />
+      </span>
+      <span>
+        <label for="curVr">Current VR</label>
+        <input type="text" id="curVr" value='' placeholder="Enter current VR"  />
+      </span>
+      <span>
+        <button class="button" id='currBtn' type='button'>SUBMIT</button>
+        <button class="button" id="clearCurrBtn" type='button'>CLEAR</button>
+        <button class="button" id="backBtn" type='button'>BACK</button>
+      </span>
+    </div>
              
     </body>
   <script src="script.js"></script>

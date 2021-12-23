@@ -95,7 +95,8 @@ hr {
 }
 
 .note,
-.initSet {
+.initSet,
+.messageModal {
   border: 3px;
   border-style: solid;
   border-radius: 1ex;

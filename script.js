@@ -22,7 +22,9 @@ let initSetModal = document.querySelector(".initSet");
 const abgModal = document.querySelector(".abg");
 const existSetModal = document.querySelector(".existSet");
 const phInput = document.getElementById("ph");
-const upRateMod = document.querySelector(".upRate");
+const message = document.querySelector(".message");
+const messageModal = document.querySelector(".messageModal");
+const messageResetBtn = document.getElementById("resetMessageBtn");
 const paco2Input = document.getElementById("paco2");
 const hco3Input = document.getElementById("hco3");
 const pao2Input = document.getElementById("pao2");
@@ -31,6 +33,7 @@ const abgSubBtn = document.getElementById("abgBtn");
 const clearAbgBtn = document.getElementById("clearAbg");
 const abgBackBtn = document.getElementById("abgBackBtn");
 const initSet = document.querySelector(".initSet");
+const starterPage = document.querySelector(".starter");
 let initialSet = document.createElement("p");
 let initBtn = document.createElement("button");
 let confirm = document.getElementById("confirm");
@@ -40,14 +43,18 @@ let copd = false;
 let heart = false;
 let neuro = false;
 
-heightInput.value = "";
-sex.value = "";
-bagged.value = "";
-phInput.value = "";
-paco2Input.value = "";
-hco3Input.value = "";
-pao2Input.value = "";
-spo2Input.value = "";
+const startup = function () {
+  heightInput.value = "";
+  sex.value = "";
+  bagged.value = "";
+  phInput.value = "";
+  paco2Input.value = "";
+  hco3Input.value = "";
+  pao2Input.value = "";
+  spo2Input.value = "";
+  starterPage.classList.remove("hidden");
+};
+startup();
 
 //This function opens modal1
 const openModal1 = function () {
@@ -106,6 +113,14 @@ const vTCalc = function (pbw) {
   return vT;
 };
 
+//Function reset message window to state screen
+const messageReset = function () {
+  messageResetBtn.addEventListener("click", function () {
+    messageModal.classList.add("hidden");
+    startup();
+  });
+};
+
 //eventListener for submit button. This will direct user to one of 4 modals depending on what vent guideline was picked.
 btnSubmit.addEventListener("click", function () {
   const ptSex = sex.value;
@@ -119,11 +134,11 @@ btnSubmit.addEventListener("click", function () {
     //confirm button eventListener
     confirmBtn.addEventListener("click", function () {
       modal2.classList.add("hidden");
-      demographics.classList.add("hidden");
-      document.querySelector("h1").classList.add("hidden");
+      starterPage.classList.add("hidden");
 
       if (ards != false) {
         openArdsModal();
+        //BUG: Should all my ards code go in here? I almost think so. I think what need to happen here is for the confirm message to be not hard coded? How can I do this. I thought about this while I was coding this section originally.
       } else if (copd != false) {
         openCopdModal();
       } else if (heart != false) {
@@ -147,13 +162,16 @@ btnSubmit.addEventListener("click", function () {
       ards = true;
       modal1.classList.add("hidden");
       openModal2();
+      //existSetModal.classList.add("hidden");
       confirm.innerHTML = `Confirm! ${ptSex}, ${ptHeight} inches tall, using the ARDS Guideline? Pt is being bagged / no ABG? ${ptBagged}`;
 
       if (bagged.value === "Yes") {
         console.log("follow yes route");
 
         //Modal showing VT and Rate, remind user to obtain ABG in 15 minutes.
+        //BUG: All this shit need to be fixed first before I move to the bug on top
 
+        document.querySelector(".initSet").classList.remove("hidden");
         initSet.append(initialSet, initBtn);
         initialSet.textContent = `Initial ventilator settings: VT = ${vTCalc(
           pbw
@@ -191,23 +209,27 @@ btnSubmit.addEventListener("click", function () {
 
               if (ptPh <= 7.3) {
                 //write logic to display a modal with original vent rate + 30% (Max 30)
-                upRateMod.textContent = `Increase VR from ${ardsRate} to ${
+                messageModal.classList.remove("hidden");
+                message.textContent = `Increase VR from ${ardsRate} to ${
                   ardsRate + ardsRate * 0.3
                 }.`;
-                //todo: Add RESET and BACK buttons here
-                //initBtn.textContent = "Next";
-                //initBtn.classList.add("button");
+                messageReset();
+                //todo: Add BACK button here
               } else {
                 if (ptPh >= 7.45) {
                   //Decrease vent rate by 20 % (min 10)
-                  upRateMod.textContent = `Decrease VR from ${ardsRate} to ${
+                  messageModal.classList.remove("hidden");
+                  message.textContent = `Decrease VR from ${ardsRate} to ${
                     ardsRate - ardsRate * 0.3
-                    //todo: Add RESET and BACK buttons here
+                    //todo: Add BACK button here
                   }.`;
+                  messageReset();
                 } else {
                   //Maintain all settings
-                  upRateMod.textContent = `You're no RT, but doing OK. Maintain these settings!`;
-                  //todo: Add RESET and BACK buttons here
+                  messageModal.classList.remove("hidden");
+                  message.textContent = `You're no RT, but doing OK. Maintain these settings!`;
+                  messageReset();
+                  //todo: Add BACK button here
                 }
               }
             }
@@ -222,9 +244,9 @@ btnSubmit.addEventListener("click", function () {
         });
       } else {
         console.log("follow no route");
-        initSet.classList.add("hidden");
+
         //Modal as to enter current VT, total VR and MV
-        existSetModal.classList.remove("hidden");
+        //existSetModal.classList.remove("hidden");
 
         //Set VT at 6ml/kg
 
@@ -269,8 +291,5 @@ btnSubmit.addEventListener("click", function () {
 
 //_____________________________________________________________________
 
-//The following modals will open depending on what was selectied prior to this.
-//Modal opening on ARDS class='.ardsModal'
-//Modal opening on COPD
-//Modal opening on HEART & OTHERS
-//Modal opening on NEURO
+//Global buttons:
+//Reset (reset to main screen )

@@ -33,9 +33,11 @@ const abgSubBtn = document.getElementById("abgBtn");
 const clearAbgBtn = document.getElementById("clearAbg");
 const abgBackBtn = document.getElementById("abgBackBtn");
 const initSet = document.querySelector(".initSet");
+const initSetText = document.querySelector(".initSetP");
+const initBtn = document.getElementById("initBtn");
 const starterPage = document.querySelector(".starter");
-let initialSet = document.createElement("p");
-let initBtn = document.createElement("button");
+//let initialSet = document.createElement("p");
+//let initBtn = document.createElement("button");
 let confirm = document.getElementById("confirm");
 let pbw = 0;
 let ards = false;
@@ -131,65 +133,41 @@ btnSubmit.addEventListener("click", function () {
   } else {
     openModal1();
 
-    //confirm button eventListener
-    confirmBtn.addEventListener("click", function () {
-      modal2.classList.add("hidden");
-      starterPage.classList.add("hidden");
-
-      if (ards != false) {
-        openArdsModal();
-        //BUG: Should all my ards code go in here? I almost think so. I think what need to happen here is for the confirm message to be not hard coded? How can I do this. I thought about this while I was coding this section originally.
-      } else if (copd != false) {
-        openCopdModal();
-      } else if (heart != false) {
-        openHeartModal();
-      } else if (neuro != false) {
-        openNeuroModal();
-      }
-    });
-
-    //Start Over eventlistener
-    resetBtn.addEventListener("click", function () {
-      modal2.classList.add("hidden");
-      heightInput.value = "";
-      sex.value = "";
-      bagged.value = "";
-      initialSet.textContent = "";
-    });
-
     //Eventlistener ards
     btnArds.addEventListener("click", function () {
       ards = true;
       modal1.classList.add("hidden");
       openModal2();
-      //existSetModal.classList.add("hidden");
+      existSetModal.classList.add("hidden");
       confirm.innerHTML = `Confirm! ${ptSex}, ${ptHeight} inches tall, using the ARDS Guideline? Pt is being bagged / no ABG? ${ptBagged}`;
 
-      if (bagged.value === "Yes") {
-        console.log("follow yes route");
+      //confirm button eventListener
+      confirmBtn.addEventListener("click", function () {
+        modal2.classList.add("hidden"); //hides confirm message
+        starterPage.classList.add("hidden"); //hides initial screen
+        if (ards != false) {
+          openArdsModal();
+        }
+        if (bagged.value === "Yes") {
+          console.log("Y");
+          initSet.classList.remove("hidden");
+          initSetText.textContent = `Initial ventilator settings: VT = ${vTCalc(
+            pbw
+          )}, Rate of ${ardsRate}, PEEP of 8 mmHg.`;
+          initBtn.addEventListener("click", function () {
+            document.querySelector(".initSet").classList.add("hidden");
 
-        //Modal showing VT and Rate, remind user to obtain ABG in 15 minutes.
-        //BUG: All this shit need to be fixed first before I move to the bug on top
-
-        document.querySelector(".initSet").classList.remove("hidden");
-        initSet.append(initialSet, initBtn);
-        initialSet.textContent = `Initial ventilator settings: VT = ${vTCalc(
-          pbw
-        )}, Rate of ${ardsRate}, PEEP of 8 mmHg.`;
-        //todo: Add RESET and BACK buttons here
-        initBtn.textContent = "Next";
-        initBtn.classList.add("button");
-        initBtn.addEventListener("click", function () {
-          document.querySelector(".initSet").classList.add("hidden");
-
-          //Modal asking: Is new pH <= 7.30?
-          ardsModal.classList.add("hidden");
-          openAbg();
-
+            //Modal asking: Is new pH <= 7.30?
+            ardsModal.classList.add("hidden");
+            openAbg();
+          });
+          //Go back from abg screen
           abgBackBtn.addEventListener("click", function () {
             //todo: Add logic for back button here
             console.log("go back boy!");
           });
+
+          //ABG submit event listener
           abgSubBtn.addEventListener("click", function () {
             const ptPh = phInput.value;
             const ptPaco2 = paco2Input.value;
@@ -241,23 +219,22 @@ btnSubmit.addEventListener("click", function () {
             pao2Input.value = "";
             spo2Input.value = "";
           });
-        });
-      } else {
-        console.log("follow no route");
+        } else {
+          console.log("N");
+          //Modal as to enter current VT, total VR and MV
+          existSetModal.classList.remove("hidden");
 
-        //Modal as to enter current VT, total VR and MV
-        //existSetModal.classList.remove("hidden");
+          //Set VT at 6ml/kg
 
-        //Set VT at 6ml/kg
+          //Is pH >= 7.30?
 
-        //Is pH >= 7.30?
+          //Yes
 
-        //Yes
+          //Is pH >= 7.45?
 
-        //Is pH >= 7.45?
-
-        //No
-      }
+          //No
+        }
+      });
     });
 
     //Eventlistener copd
@@ -266,20 +243,58 @@ btnSubmit.addEventListener("click", function () {
       modal1.classList.add("hidden");
       openModal2();
       confirm.innerHTML = `Confirm! ${ptSex}, ${ptHeight} inches tall, using the COPD Guideline? Pt is being bagged / no ABG? ${ptBagged}`;
+
+      //confirm button eventListener
+      confirmBtn.addEventListener("click", function () {
+        modal2.classList.add("hidden"); //hides confirm message
+        starterPage.classList.add("hidden"); //hides initial screen
+        if (copd != false) {
+          openCopdModal();
+        }
+      });
     });
+
     //Eventlistener heart
     btnHeart.addEventListener("click", function () {
       heart = true;
       modal1.classList.add("hidden");
       openModal2();
       confirm.innerHTML = `Confirm! ${ptSex}, ${ptHeight} inches tall, using the Heart & Others Guideline? Pt is being bagged / no ABG? ${ptBagged}`;
+
+      //confirm button eventListener
+      confirmBtn.addEventListener("click", function () {
+        modal2.classList.add("hidden"); //hides confirm message
+        starterPage.classList.add("hidden"); //hides initial screen
+        if (heart != false) {
+          openHeartModal();
+        }
+      });
     });
+
     //Eventlistener neuro
     btnNeuro.addEventListener("click", function () {
       neuro = true;
       modal1.classList.add("hidden");
       openModal2();
       confirm.innerHTML = `Confirm! ${ptSex}, ${ptHeight} inches tall, using the Neuro Protective Guideline? Pt is being bagged / no ABG? ${ptBagged}`;
+
+      //confirm button eventListener
+      confirmBtn.addEventListener("click", function () {
+        modal2.classList.add("hidden"); //hides confirm message
+        starterPage.classList.add("hidden"); //hides initial screen
+        if (neuro != false) {
+          openNeuroModal();
+        }
+      });
+    });
+
+    //Start Over eventlistener
+    resetBtn.addEventListener("click", function () {
+      modal2.classList.add("hidden");
+      heightInput.value = "";
+      sex.value = "";
+      bagged.value = "";
+      initSetText.textContent = ""; //todo: Change after init changed
     });
   }
   //Call function to calc PBW

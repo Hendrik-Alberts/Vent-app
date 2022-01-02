@@ -5,7 +5,7 @@ const btnCopd = document.getElementById("copd");
 const btnHeart = document.getElementById("heart");
 const btnNeuro = document.getElementById("neuro");
 const confirmBtn = document.getElementById("confirmB");
-const resetBtn = document.getElementById("reset");
+const resetBtn = document.getElementById("reset"); //Same ID as line 27
 const initForm = document.querySelector(".form");
 const btnSubmit = document.querySelector("#submit");
 let heightInput = document.getElementById("height");
@@ -24,7 +24,7 @@ const existSetModal = document.querySelector(".existSet");
 const phInput = document.getElementById("ph");
 const message = document.querySelector(".message");
 const messageModal = document.querySelector(".messageModal");
-const messageResetBtn = document.getElementById("resetMessageBtn");
+const messageResetBtn = document.getElementById("resetMsg");
 const paco2Input = document.getElementById("paco2");
 const hco3Input = document.getElementById("hco3");
 const pao2Input = document.getElementById("pao2");
@@ -39,6 +39,8 @@ const starterPage = document.querySelector(".starter");
 //let initialSet = document.createElement("p");
 //let initBtn = document.createElement("button");
 let confirm = document.getElementById("confirm");
+const currentVT = document.getElementById("curVt");
+const currentVR = document.getElementById("curVr");
 let pbw = 0;
 let ards = false;
 let copd = false;
@@ -54,7 +56,12 @@ const startup = function () {
   hco3Input.value = "";
   pao2Input.value = "";
   spo2Input.value = "";
+  currentVT.value = "";
+  currentVR.value = "";
   starterPage.classList.remove("hidden");
+  pbw = 0;
+  messageModal.classList.add("hidden");
+  modal2.classList.add("hidden");
 };
 startup();
 
@@ -110,15 +117,32 @@ const pbwFormula = function (height, sex) {
   }
 };
 
+//Fuction Calculating Tidal Volume based on PBW
 const vTCalc = function (pbw) {
   const vT = Math.round(pbw * 6);
   return vT;
 };
 
+//Function Calculating current MV/ PBW (6 ml)
+const minVolCalc = function (vol, rate) {
+  const minuteVol = vol * rate;
+  return Math.round(minuteVol / vTCalc(pbw));
+};
+
+//Function Increase Rate by 30%
+const increase30 = function (minVolCalc) {
+  return Math.round(minVolCalc + minVolCalc * 0.3);
+};
+
+//Function Decrease Rate by 20%
+const decrease20 = function (minVolCalc) {
+  return Math.round(minVolCalc - minVolCalc * 0.2);
+};
+
 //Function reset message window to state screen
 const messageReset = function () {
   messageResetBtn.addEventListener("click", function () {
-    messageModal.classList.add("hidden");
+    console.log("click");
     startup();
   });
 };
@@ -128,6 +152,9 @@ btnSubmit.addEventListener("click", function () {
   const ptSex = sex.value;
   const ptHeight = heightInput.value;
   const ptBagged = bagged.value;
+  pbw = pbwFormula(ptHeight, ptSex);
+  //console.log(vTCalc(pbw));
+  //console.log(ptPBW6);
   if (ptSex === "" || ptHeight === "" || ptBagged === "") {
     alert("Please complete all fields.");
   } else {
@@ -140,7 +167,10 @@ btnSubmit.addEventListener("click", function () {
       openModal2();
       existSetModal.classList.add("hidden");
       confirm.innerHTML = `Confirm! ${ptSex}, ${ptHeight} inches tall, using the ARDS Guideline? Pt is being bagged / no ABG? ${ptBagged}`;
-
+      //Reset to main
+      resetBtn.addEventListener("click", function () {
+        startup();
+      });
       //confirm button eventListener
       confirmBtn.addEventListener("click", function () {
         modal2.classList.add("hidden"); //hides confirm message
@@ -148,16 +178,20 @@ btnSubmit.addEventListener("click", function () {
         if (ards != false) {
           openArdsModal();
         }
+        //NOTE: ARDS Yes Logic _____________________________________________________________
+
         if (bagged.value === "Yes") {
           console.log("Y");
           initSet.classList.remove("hidden");
           initSetText.textContent = `Initial ventilator settings: VT = ${vTCalc(
             pbw
           )}, Rate of ${ardsRate}, PEEP of 8 mmHg.`;
+
           initBtn.addEventListener("click", function () {
             document.querySelector(".initSet").classList.add("hidden");
+            //messageReset();
 
-            //Modal asking: Is new pH <= 7.30?
+            //Modal opening ABG
             ardsModal.classList.add("hidden");
             openAbg();
           });
@@ -170,6 +204,7 @@ btnSubmit.addEventListener("click", function () {
           //ABG submit event listener
           abgSubBtn.addEventListener("click", function () {
             const ptPh = phInput.value;
+            console.log(ptPh);
             const ptPaco2 = paco2Input.value;
             const ptHco3 = hco3Input.value;
             const ptPao2 = pao2Input.value;
@@ -211,6 +246,11 @@ btnSubmit.addEventListener("click", function () {
                 }
               }
             }
+            if (ptPh <= 6.5 || ptPh > 8) {
+              console.log(
+                `You've selected a pH of ${ptPh}. Maybe check a pulse?`
+              );
+            }
           });
           clearAbgBtn.addEventListener("click", function () {
             phInput.value = "";
@@ -219,20 +259,74 @@ btnSubmit.addEventListener("click", function () {
             pao2Input.value = "";
             spo2Input.value = "";
           });
+          //NOTE: ARDS No logic _____________________________________________________________
         } else {
-          console.log("N");
-          //Modal as to enter current VT, total VR and MV
-          existSetModal.classList.remove("hidden");
+          console.log("Noooooooooooooo");
+          //Open ABG Modal
+          openAbg();
+          abgSubBtn.addEventListener("click", function () {
+            const ptPh = phInput.value;
+            const ptPaco2 = paco2Input.value;
+            const ptHco3 = hco3Input.value;
+            const ptPao2 = pao2Input.value;
+            const ptSpo2 = spo2Input.value;
+            if (
+              ptPh === "" ||
+              ptPaco2 === "" ||
+              ptHco3 === "" ||
+              ptPao2 === "" ||
+              ptSpo2 === ""
+            ) {
+              alert("Please enter data in all fields.");
+            } else {
+              abgModal.classList.add("hidden");
 
-          //Set VT at 6ml/kg
+              //Modal as to enter current VT, total VR and MV
 
-          //Is pH >= 7.30?
+              existSetModal.classList.remove("hidden");
+              document
+                .getElementById("currBtn")
+                .addEventListener("click", function () {
+                  const ptCurVt = currentVT.value;
+                  const ptCurVr = currentVR.value;
+                  if (ptCurVt === "" || ptCurVr === "") {
+                    alert("Please enter data in all fields.");
+                  } else {
+                    existSetModal.classList.add("hidden");
+                    //if the pH is < 7.30 then 'Set VR = (current MV/6ml/kg PBW) + 30%' Now obtain an ABG in 15 minutes.
+                    if (ptPh < 7.3) {
+                      initSet.classList.remove("hidden");
+                      initSetText.textContent = `Set VT at ${vTCalc(
+                        pbw
+                      )} and VR at ${increase30(
+                        minVolCalc(ptCurVt, ptCurVr)
+                      )}. \nObtain ABG in 15 minutes.`;
+                    }
 
-          //Yes
+                    //else if pH is >= 7.30 && pH is < 7.45 'Set VR = (current MV/6ml/kg PBW) - 20%' Now obtain an ABG in 15 minutes.
+                    else if (ptPh >= 7.3 && ptPh < 7.45) {
+                      initSet.classList.remove("hidden");
+                      initSetText.textContent = `Set VT at ${vTCalc(
+                        pbw
+                      )} and VR at ${decrease20(
+                        minVolCalc(ptCurVt, ptCurVr)
+                      )}. \nObtain ABG in 15 minutes.`;
+                    }
 
-          //Is pH >= 7.45?
-
-          //No
+                    //else 'Set VR = current MV/6ml per kg PBW' Now obtain an ABG in 15 minutes.
+                    else {
+                      initSet.classList.remove("hidden");
+                      initSetText.textContent = `Set VT at ${vTCalc(
+                        pbw
+                      )} and VR at ${minVolCalc(
+                        ptCurVt,
+                        ptCurVr
+                      )}. \nObtain ABG in 15 minutes.`;
+                    }
+                  }
+                });
+            }
+          });
         }
       });
     });
@@ -289,13 +383,13 @@ btnSubmit.addEventListener("click", function () {
     });
 
     //Start Over eventlistener
-    resetBtn.addEventListener("click", function () {
-      modal2.classList.add("hidden");
-      heightInput.value = "";
-      sex.value = "";
-      bagged.value = "";
-      initSetText.textContent = ""; //todo: Change after init changed
-    });
+    // resetBtn.addEventListener("click", function () {
+    //   modal2.classList.add("hidden");
+    //   heightInput.value = "";
+    //   sex.value = "";
+    //   bagged.value = "";
+    //   initSetText.textContent = ""; //todo: Change after init changed
+    // });
   }
   //Call function to calc PBW
   pbwFormula(ptHeight, ptSex);

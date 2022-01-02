@@ -65,35 +65,7 @@
 
     
 
-    <!-- ABG Modal     -->
-    <div class="abg hidden">
-      <span>
-        <label for="pH">pH</label>
-        <input type="text" id="ph" value='' placeholder="7.35 - 7.45"  /> 
-      </span>
-      
-      <span>
-        <label for="PaCO2">PaCO2</label>
-        <input type="text" id="paco2" value='' placeholder="35 mmHg - 45 mmHg"/>
-      </span>
-      <span>
-        <label for="HCO3">HCO3</label>
-        <input type="text" id="hco3" value='' placeholder="22 mEq/L - 26 mEq/L"  />
-      </span>
-      <span>
-        <label for="PaO2">PaO2</label>
-        <input type="text" id="pao2" value='' placeholder="75 mmHg - 100 mmHg"  />
-      </span>
-      <span>
-        <label for="SpO2">SpO2</label>
-        <input type="text" id="spo2" value='' placeholder=">95%"  />
-      </span>
-      <span>
-        <button class="button" id='abgBtn' type='button'>SUBMIT</button>
-        <button class="button" id="clearAbg" type='button'>CLEAR</button>
-        <button class="button" id='abgBackBtn' type='button'>BACK</button>
-      </span>
-    </div>
+    
       
     <div class="modalGuideline ">
 
@@ -241,9 +213,42 @@
     <!-- new messaage model -->
     <div class="messageModal hidden">
       <p class="message"></p>
-      <button class="button" id="resetMessageBtn" type='button'>RESET</button>
+      <button class="button" id="resetMsg" type='button'>RESET</button>
       <button class="button" id="goBackBtn" type='button'>BACK</button>
 
+    </div>
+
+    <!-- ABG Modal     -->
+    <div class="abg hidden">
+    
+      <span>
+        <label for="pH">pH</label>
+        <input type="number" id="ph" value='' placeholder="7.35 - 7.45" min="6.5" max="8.5" step="0.01" /> 
+      </span>
+      
+      <span>
+        <label for="PaCO2">PaCO2</label>
+        <input type="number" id="paco2" value='' placeholder="35 mmHg - 45 mmHg" min="7" max="70" step="1"/>
+      </span>
+      <span>
+        <label for="HCO3">HCO3</label>
+        <input type="number" id="hco3" value='' placeholder="22 mEq/L - 26 mEq/L" min="10" max="60" step="1" />
+      </span>
+      <span>
+        <label for="PaO2">PaO2</label>
+        <input type="number" id="pao2" value='' placeholder="75 mmHg - 100 mmHg" min="20" max="663" step="1" />
+      </span>
+      <span>
+        <label for="SpO2">SpO2</label>
+        <input type="number" id="spo2" value='' placeholder=">95%" min="20" max="100" step="1" />
+      </span>
+      <span>
+        <button class="button" id='abgBtn' type='button'>SUBMIT</button>
+        <button class="button" id="clearAbg" type='button'>CLEAR</button>
+        <button class="button" id='abgBackBtn' type='button'>BACK</button>
+      </span>
+          
+  
     </div>
 
     <!-- Modal for existing vent settings -->
